@@ -6,9 +6,30 @@ from lib.core.common import randomRange
 from lib.core.data import kb
 from lib.core.enums import PRIORITY
 
-__priority__ = PRIORITY.LOW
+__priority__ = PRIORITY.LOW # Change priority
 
-
+'''
+class PRIORITY:
+    LOWEST = -100
+    LOWER = -50
+    LOW = -10
+    NORMAL = 0
+    HIGH = 10
+    HIGHER = 50
+    HIGHEST = 100
+class DBMS:
+    ACCESS = "Microsoft Access"
+    DB2 = "IBM DB2"
+    FIREBIRD = "Firebird"
+    MAXDB = "SAP MaxDB"
+    MSSQL = "Microsoft SQL Server"
+    MYSQL = "MySQL"
+    ORACLE = "Oracle"
+    PGSQL = "PostgreSQL"
+    SQLITE = "SQLite"
+    SYBASE = "Sybase"
+    HSQLDB = "HSQLDB"
+'''
 
 def tamper(payload, **kwargs):
 
