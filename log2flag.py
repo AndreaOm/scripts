@@ -2,43 +2,54 @@
 import re,urllib
 
 log = 'access.log' # log filename
-regx = '=' # = ! > <
-
-with open(log,'r') as f:
-    data = urllib.unquote(f.read())
-
-regx += '([0-9]{2,3})'
-
-def log2flag(org):
-    flag = []
-    index = len(org) - 1
-    while 1:
-        if index == 0:
-            break
-        if (abs(int(org[index]) - int(org[index-1])) == 1):
-            index -= 1
-            continue
-        else:
-            if int(org[index-1]) > 127:
-                index -= 1
-                continue
-            flag.append(chr(int(org[index-1])))
-            index -= 1
-            continue
-    return flag[::-1]
+regx = '([0-9]{1,3}),1\)\)=([0-9]{1,3})' 
 
 
-flag = ''.join(log2flag(re.findall(regx,data)))
+'''
+匹配数据同时记录匹配所在行号
+返回的数据格式为 list
+[(a,b,行号),(a,b,行号),...]
+
+'''
+def log2line():
+	index = 1
+	data = []
+	with open(log,'r') as f:
+		for line in f:
+			r = re.findall(regx,urllib.unquote(line))
+			if r:
+				data.append((r[0][0],r[0][1],index))
+			index += 1
+	return data
+
+
+'''
+接受匹配的数据 通过判断移动指针 index
+判断 指针所指与下一个 a 是否相等
+相等不做操作 指针后移一位
+不相等则记录指针所指位的b加入flag 在判断b是否大于127 是则输出b及其行号 指针后移一位
+
+'''
+def log2flag(ori):
+	width = len(ori) - 1
+	index = 0
+	flag = []
+	while 1:
+		if (index == (width - 1)):
+			break
+		if (ori[index][0] == ori[index+1][0]):
+			index += 1
+			continue
+		else:
+			t = int(ori[index][1])
+			if t > 127:
+				print '[+] ascii:\033[1;32m'+str(t)+'\033[0m line:\033[1;33m'+str(ori[index][2]) + '\033[0m'
+			flag.append(chr(t))
+			index += 1
+			continue
+	return flag
+
+flag = ''.join(log2flag(log2line()))
 
 print flag
 
-# regexr
-'''
-
-1 查找=!>< 这四个字符其中一个或者2个  后面跟上 115 103 99 116 102 123 125 这7个数字其中一个
-regx = r'[=!><]+(115|103|99|116|102|123|125)'
-
-2 查找16进制字符串 例如0x6d697363
-regx = r'0x([a-f0-9]{1,})|0X([a-f0-9]{1,})'
-
-'''
