@@ -30,6 +30,7 @@ def log2flag(org):
 
 flag = ''.join(log2flag(re.findall(regx,data)))
 
+print flag
 
 # regexr
 '''
