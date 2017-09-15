@@ -58,6 +58,8 @@ def tamper(payload, **kwargs):
 
     userDefine = r"%09"  # Change userDefine that you want to insert
 
+    kws = ["table","or"]
+
     retVal = payload
 
     if payload:
@@ -82,11 +84,9 @@ def tamper(payload, **kwargs):
             
                 retVal = retVal.replace(word, _)
 
-            if "OR" in retVal:
-                retVal = retVal.replace("OR","O" + userDefine + "R")
-
-            if "or" in retVal:
-                retVal = retVal.replace("or","o" + userDefine + "r")
+        for x in kws:
+            if x in retVal:
+                retVal = retVal.replace(x,x[:-1]+userDefine+x[-1:])
 
 
     return retVal
