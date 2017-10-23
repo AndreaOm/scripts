@@ -19,6 +19,6 @@ def vcode():
         else:'''
         return vcode()
     except:
-        return 0
+        return 'err'
 
 print vcode()
